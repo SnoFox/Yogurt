@@ -6,12 +6,13 @@
 
 module.exports = BotConsole;
 
-var readline = require("readline");
 var bot;
+var readline = require("readline");
 var rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout
 });
+var sigint = 0;
 
 function BotConsole(bawt) {
 	bot = bawt;
@@ -20,7 +21,7 @@ function BotConsole(bawt) {
 }
 
 function handleMessage(from, to, msg) {
-	console.log("[%s] <%s> %s", to, from, msg);
+	doLog("[" + to + "] <" + from + "> " + msg);
 }
 
 function handleLine(line) {
@@ -33,7 +34,30 @@ function handleLine(line) {
 	bot.say(argv.shift(), argv.join(" "));
 }
 
+function handleCmd(line) {
+	// XXX commands NYI :D
+	return;
+}
+
+function doLog(msg) {
+	rl.output.write("\x1b[2K\r");
+	console.log(msg);
+	rl.prompt(true);
+}
+
 rl.setPrompt("> ");
 rl.prompt();
 
 rl.on("line", function(l) { handleLine(l); rl.prompt() });
+rl.on("SIGINT", function() {
+	if(sigint < 1) {
+		++sigint;
+		doLog("Tap ^C again to kill the bot.");
+	} else {
+		console.log("\n\nCaught SIGINT... Bye!");
+		bot.disconnect("Caught SIGINT");
+		rl.close();
+		process.exit(0);
+	}
+	setTimeout(function() { sigint = 0 }, 1000);
+});
