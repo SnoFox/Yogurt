@@ -16,3 +16,6 @@ for(idx in modules) {
 	console.log("Registering " + modules[idx].name);
 	new modules[idx](bot);
 }
+
+// Silently discard IRC errors without crashing the bot
+bot.addListener("error", function(msg) {});
