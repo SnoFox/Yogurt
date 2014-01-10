@@ -5,7 +5,8 @@
   "dependencies": {
     "irc": "~0.3.6",
     "request": "~2.31.0",
-    "cheerio": "~0.13.1"
+    "cheerio": "~0.13.1",
+    "watchr": "~2.4.8"
   },
   "main": "app.js",
   "version": "1.0.0",

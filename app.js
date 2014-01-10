@@ -13,8 +13,9 @@ var bot = new irc.Client(cfg.server, cfg.nick, {
 });
 
 for(idx in modules) {
-	console.log("Registering " + modules[idx].name);
-	new modules[idx](bot);
+	var modName = modules[idx].name;
+	console.log("Registering " + modName);
+	new modules[idx](bot, cfg[modName]);
 }
 
 // Silently discard IRC errors without crashing the bot

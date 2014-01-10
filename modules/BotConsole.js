@@ -14,7 +14,7 @@ var rl = readline.createInterface({
 });
 var sigint = 0;
 
-function BotConsole(bawt) {
+function BotConsole(bawt, cfg) {
 	bot = bawt;
 	bot.addListener("message", handleMessage);
 	console.log("Console loaded!");

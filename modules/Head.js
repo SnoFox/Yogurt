@@ -9,7 +9,7 @@ var request = require("request").defaults({followAllRedirects: true, strictSSL: 
 var Cheerio = require("cheerio");
 var bot;
 
-function Head(bawt) {
+function Head(bawt, cfg) {
 	bot = bawt;
 	bawt.addListener("message", handleMessage);
 	console.log("Head loaded!");
