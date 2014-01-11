@@ -10,8 +10,8 @@ for(idx in moduleFiles) {
 	if(moduleFile.match(/.*\.js$/i)) moduleConstructors.push(require("./modules/" + moduleFile));
 }
 
-var bot = new irc.Client(cfg.server, cfg.nick, {
-	channels: cfg.channels
+var bot = new irc.Client(cfg.core.server, cfg.core.nick, {
+	channels: cfg.core.channels
 });
 
 for(idx in moduleConstructors) {
