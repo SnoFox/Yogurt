@@ -22,7 +22,9 @@ for(idx in moduleConstructors) {
 }
 
 // Silently discard IRC errors without crashing the bot
-//bot.addListener("error", function(msg) {});
+bot.addListener("error", function(msg) {
+	doLog("Error: " + msg);
+});
 process.on("SIGHUP", function() {
 	bot.disconnect("Caught deadly SIGHUP");
 });
