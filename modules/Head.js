@@ -41,7 +41,7 @@ function handleHead(error, resp, body, chan, url) {
 		return;
 	}
 	var $ = Cheerio.load(body);
-	var title = $("title").text();
+	var title = $("title").text().trim();
 	if(title == undefined || title == "") {
 		msg(chan, "Site has no title.");
 		return;
