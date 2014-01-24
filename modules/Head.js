@@ -1,7 +1,7 @@
 /*
  * Yogurt IRC bot module
  * Gives head
- */
+*/
 
 module.exports = Head;
 
@@ -20,26 +20,26 @@ function handleMessage(from, to, msg) {
 	if(matches != undefined && matches.length != 0) {
 		for(idx in matches) {
 			var url = require('url').parse(matches[idx]);
-      opts = {method: "HEAD", url: url};
+			opts = {method: "HEAD", url: url};
 			request(opts, function(e, r, b) { handleHead(e, r, b, to, url) })
 		}
 	}
 }
 
 function handleHead(error, resp, body, chan, url) {
-  if(checkErrors(error, resp, chan)) return;
+	if(checkErrors(error, resp, chan)) return;
 	var contentType = resp.headers["content-type"].split(";")[0];
 	if(contentType != "text/html") {
 		msg(chan, "Link content: " + contentType);
 		return;
 	}
-  var opts = {method: "GET", url: url};
-  request(opts, function(e, r, b) { handleGet(e, r, b, chan) });
+	var opts = {method: "GET", url: url};
+	request(opts, function(e, r, b) { handleGet(e, r, b, chan) });
 }
 
 function handleGet(error, resp, body, chan) {
-  if(checkErrors(error, resp, chan)) return;
- 	var $ = Cheerio.load(body);
+	if(checkErrors(error, resp, chan)) return;
+	var $ = Cheerio.load(body);
 	var title = $("title").text().trim();
 	if(title == undefined || title == "") {
 		msg(chan, "Site has no title.");
@@ -50,7 +50,7 @@ function handleGet(error, resp, body, chan) {
 
 // Returns true if there was an error; false otherwise
 function checkErrors(error, resp, chan) {
-  	if(error) {
+	if(error) {
 		msg(chan, "Error: " + error);
 		return true;
 	}
@@ -58,7 +58,7 @@ function checkErrors(error, resp, chan) {
 		msg(chan, "Site returned " + resp.statusCode);
 		return true;
 	}
-  return false;
+	return false;
 }
 
 function msg(chan, msg) {
