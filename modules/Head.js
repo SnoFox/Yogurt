@@ -27,10 +27,10 @@ function handleMessage(from, to, msg) {
 }
 
 function handleHead(error, resp, body, chan, url) {
-	if(checkErrors(error, resp, chan)) return;
-	var contentType = resp.headers["content-type"].split(";")[0];
+	if(checkErrors(error, resp, chan, url)) return;
+	var contentType = getContentType(resp);
 	if(contentType != "text/html") {
-		msg(chan, "Link content: " + contentType);
+		reportContentType(contentType, chan);
 		return;
 	}
 	var opts = {method: "GET", url: url};
@@ -39,6 +39,11 @@ function handleHead(error, resp, body, chan, url) {
 
 function handleGet(error, resp, body, chan) {
 	if(checkErrors(error, resp, chan)) return;
+	var contentType = getContentType(resp);
+	if(contentType != "text/html") {
+		reportContentType(contentType, chan);
+		return;
+	}
 	var $ = Cheerio.load(body);
 	var title = $("title").text().trim();
 	if(title == undefined || title == "") {
@@ -48,17 +53,25 @@ function handleGet(error, resp, body, chan) {
 	msg(chan, title);
 }
 
+function getContentType(resp) {
+	return resp.headers["content-type"].split(";")[0];
+}
+
 // Returns true if there was an error; false otherwise
-function checkErrors(error, resp, chan) {
+function checkErrors(error, resp, chan, url) {
 	if(error) {
 		msg(chan, "Error: " + error);
 		return true;
 	}
-	if(resp.statusCode != 200) {
+	if(resp.statusCode == 200) {
+		return false;
+	} else if(resp.statusCode == 405) {
+		var methods = resp.headers["allow"].split(" ");
+		for(idx in methods) if(methods[idx].toUpperCase() == "GET" && url != undefined) request({method: "GET", url: url}, handleGet);
 		msg(chan, "Site returned " + resp.statusCode);
 		return true;
 	}
-	return false;
+	return true; // Uncaught and therefore unexpected status code
 }
 
 function msg(chan, msg) {
