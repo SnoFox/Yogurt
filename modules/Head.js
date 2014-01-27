@@ -57,6 +57,10 @@ function getContentType(resp) {
 	return resp.headers["content-type"].split(";")[0];
 }
 
+function reportContentType(type, where) {
+	msg(where, "Link content is " + type);
+}
+
 // Returns true if there was an error; false otherwise
 function checkErrors(error, resp, chan, url) {
 	if(error) {
