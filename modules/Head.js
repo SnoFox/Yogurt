@@ -7,6 +7,7 @@ module.exports = Head;
 
 var request = require("request").defaults({followAllRedirects: true, strictSSL: false});
 var Cheerio = require("cheerio");
+var humanize = require("humanize");
 var bot;
 
 function Head(bawt, cfg) {
@@ -30,7 +31,7 @@ function handleHead(error, resp, body, chan, url) {
 	if(checkErrors(error, resp, chan, url)) return;
 	var contentType = getContentType(resp);
 	if(contentType != "text/html") {
-		reportContentType(contentType, chan);
+		reportContentType(resp, chan);
 		return;
 	}
 	var opts = {method: "GET", url: url};
@@ -41,7 +42,7 @@ function handleGet(error, resp, body, chan) {
 	if(checkErrors(error, resp, chan)) return;
 	var contentType = getContentType(resp);
 	if(contentType != "text/html") {
-		reportContentType(contentType, chan);
+		reportContentType(resp, chan);
 		return;
 	}
 	var $ = Cheerio.load(body);
@@ -57,8 +58,15 @@ function getContentType(resp) {
 	return resp.headers["content-type"].split(";")[0];
 }
 
-function reportContentType(type, where) {
-	msg(where, "Link content is " + type);
+function getContentLength(resp) {
+	return resp.headers["content-length"];
+}
+
+function reportContentType(resp, where) {
+	var type = getContentType(resp);
+	var length = getContentLength(resp);
+	length = humanize.filesize(length);
+	msg(where, "Link content is " + type +" (" + length +")");
 }
 
 // Returns true if there was an error; false otherwise
@@ -71,11 +79,13 @@ function checkErrors(error, resp, chan, url) {
 		return false;
 	} else if(resp.statusCode == 405) {
 		var methods = resp.headers["allow"].split(" ");
-		for(idx in methods) if(methods[idx].toUpperCase() == "GET" && url != undefined) request({method: "GET", url: url}, handleGet);
-		msg(chan, "Site returned " + resp.statusCode);
-		return true;
+	for(idx in methods) if(methods[idx].toUpperCase() == "GET" && url != undefined) {
+			request({method: "GET", url: url}, handleGet);
+			return true;
+		}
 	}
-	return true; // Uncaught and therefore unexpected status code
+	msg(chan, "Site returned " + resp.statusCode);
+	return true;
 }
 
 function msg(chan, msg) {
