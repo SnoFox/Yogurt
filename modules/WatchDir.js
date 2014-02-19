@@ -11,6 +11,10 @@ var chans;
 
 function WatchDir(bawt, cfg) {
 	bot = bawt;
+	if(cfg == undefined) {
+		bot.console.log("No config. Aborting init");
+		return;
+	}
 	watchr.watch({
 		paths: cfg.paths,
 		listener: handleChange
