@@ -16,7 +16,7 @@ function WatchDir(bawt, cfg) {
 		listener: handleChange
 	});
 	chans = cfg.chans;
-	console.log("WatchDir loaded!");
+	bot.console.log("WatchDir loaded!");
 }
 
 function handleChange(changeType, path, cur, prev) {

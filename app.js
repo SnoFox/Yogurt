@@ -7,7 +7,7 @@ var irc = require("irc");
 var moduleFiles = fs.readdirSync("modules/");
 var moduleConstructors = [];
 bot.modules = {};
-bot.console = undefined;
+bot.console = {log: console.log};
 for(idx in moduleFiles) {
 	var moduleFile = moduleFiles[idx];
 	if(moduleFile.match(/.*\.js$/i)) moduleConstructors.push(require("./modules/" + moduleFile));
@@ -20,7 +20,7 @@ util.inherits(bot.irc, EventPipe);
 
 for(idx in moduleConstructors) {
 	var modName = moduleConstructors[idx].name;
-	console.log("Registering " + modName);
+	bot.console.log("Registering " + modName);
 	bot.modules[modName] = new moduleConstructors[idx](bot, cfg[modName]);
 	if(modName == "BotConsole") bot.console = bot.modules[modName];
 }
