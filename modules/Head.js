@@ -12,7 +12,7 @@ var bot;
 
 function Head(bawt, cfg) {
 	bot = bawt;
-	bawt.addListener("message", handleMessage);
+	bot.irc.on("message", handleMessage, 10);
 	console.log("Head loaded!");
 }
 
@@ -89,5 +89,5 @@ function checkErrors(error, resp, chan, url) {
 }
 
 function msg(chan, msg) {
-	bot.say(chan, "[URL] " + msg);
+	bot.irc.say(chan, "[URL] " + msg);
 }

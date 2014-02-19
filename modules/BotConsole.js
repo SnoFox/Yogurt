@@ -19,7 +19,7 @@ var sigint = 0;
 function BotConsole(bawt, cfg) {
 	bot = bawt;
 	that = this;
-	bot.addListener("message", handleMessage);
+	bot.irc.on("message", handleMessage, 0);
 }
 
 BotConsole.prototype.log = function(msg, ts) {
@@ -38,7 +38,7 @@ function handleLine(line) {
 		return;
 	}
 	var argv = line.split(" ");
-	bot.say(argv.shift(), argv.join(" "));
+	bot.irc.say(argv.shift(), argv.join(" "));
 }
 
 function handleCmd(line) {
@@ -63,7 +63,7 @@ rl.on("SIGINT", function() {
 		doLog("Tap ^C again to kill the bot.", false);
 	} else {
 		console.log("\n\nCaught SIGINT... Bye!");
-		bot.disconnect("Caught SIGINT");
+		bot.irc.disconnect("Caught SIGINT");
 		rl.close();
 		process.exit(0);
 	}

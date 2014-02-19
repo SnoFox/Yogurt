@@ -1,28 +1,32 @@
-var irc = require("irc");
-var cfg = require("./config.js");
+var util = require('util');
 var fs = require("fs");
-var BotConsole;
+var bot = {};
+var EventPipe = require("eventpipe").EventPipe;
+var cfg = require("./config.js");
+var irc = require("irc");
 var moduleFiles = fs.readdirSync("modules/");
 var moduleConstructors = [];
-var modules = {};
+bot.modules = {};
+bot.console = undefined;
 for(idx in moduleFiles) {
 	var moduleFile = moduleFiles[idx];
 	if(moduleFile.match(/.*\.js$/i)) moduleConstructors.push(require("./modules/" + moduleFile));
 }
 
-var bot = new irc.Client(cfg.core.server, cfg.core.nick, {
+bot.irc = new irc.Client(cfg.core.server, cfg.core.nick, {
 	channels: cfg.core.channels
 });
+util.inherits(bot.irc, EventPipe);
 
 for(idx in moduleConstructors) {
 	var modName = moduleConstructors[idx].name;
 	console.log("Registering " + modName);
-	modules[modName] = new moduleConstructors[idx](bot, cfg[modName]);
-	if(modName == "BotConsole") BotConsole = modules[modName];
+	bot.modules[modName] = new moduleConstructors[idx](bot, cfg[modName]);
+	if(modName == "BotConsole") bot.console = bot.modules[modName];
 }
 
 // Silently discard IRC errors without crashing the bot
-bot.addListener("error", function(msg) {
+bot.irc.addListener("error", function(msg) {
 	doLog("Error: " + require("util").inspect(msg));
 });
 process.on("SIGHUP", function() {
@@ -30,6 +34,6 @@ process.on("SIGHUP", function() {
 });
 
 function doLog(msg) {
-	if(BotConsole == undefined) console.log(msg);
-	else BotConsole.log(msg);
+	if(bot.console == undefined) console.log(msg);
+	else bot.console.log(msg);
 }
