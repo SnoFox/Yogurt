@@ -1,18 +1,18 @@
 {
-  "name": "Yogurt",
-  "description": "IRC bot to mock Pudding",
-  "author": "Josh Johnson <snofox@snofox.net>",
-  "dependencies": {
-    "irc": "~0.3.6",
-    "request": "~2.31.0",
-    "cheerio": "~0.13.1",
-    "moment": "~2.5.0",
-	"watchr": "~2.4.8",
-	"humanize": "~0.0.9"
-  },
-  "main": "app.js",
-  "version": "1.0.0",
-  "engines": {
-    "node": "*"
-  }
+	"name": "Yogurt",
+	"description": "IRC bot to mock Pudding",
+	"author": "Josh Johnson <snofox@snofox.net>",
+	"dependencies": {
+		"irc": "~0.3.6",
+		"request": "~2.31.0",
+		"cheerio": "~0.13.1",
+		"moment": "~2.5.0",
+		"watchr": "~2.4.8",
+		"humanize": "~0.0.9",
+	},
+	"main": "app.js",
+	"version": "1.0.0",
+	"engines": {
+		"node": "*"
+	}
 }
