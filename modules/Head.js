@@ -78,6 +78,7 @@ function checkErrors(error, resp, chan, url) {
 	if(resp.statusCode == 200) {
 		return false;
 	} else if(resp.statusCode == 405) {
+		if(resp.headers["allow"] == undefined) return; // This shouldn't happen according to RFC. It did.
 		var methods = resp.headers["allow"].split(" ");
 	for(idx in methods) if(methods[idx].toUpperCase() == "GET" && url != undefined) {
 			request({method: "GET", url: url}, handleGet);
