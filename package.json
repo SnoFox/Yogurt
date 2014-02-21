@@ -9,7 +9,8 @@
 		"moment": "~2.5.0",
 		"watchr": "~2.4.8",
 		"humanize": "~0.0.9",
-		"eventpipe": "~0.0.5"
+		"eventpipe": "~0.0.5",
+		"youtube-api": "~0.2.2"
 	},
 	"main": "app.js",
 	"version": "1.0.0",

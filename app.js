@@ -2,6 +2,8 @@ var util = require('util');
 var fs = require("fs");
 var bot = {};
 var EventPipe = require("eventpipe").EventPipe;
+var EventEmitter = require("events").EventEmitter;
+util.inherits(EventEmitter, EventPipe);
 var cfg = require("./config.js");
 var irc = require("irc");
 var moduleFiles = fs.readdirSync("modules/");
@@ -16,7 +18,6 @@ for(idx in moduleFiles) {
 bot.irc = new irc.Client(cfg.core.server, cfg.core.nick, {
 	channels: cfg.core.channels
 });
-util.inherits(bot.irc, EventPipe);
 
 for(idx in moduleConstructors) {
 	var modName = moduleConstructors[idx].name;
@@ -29,6 +30,7 @@ for(idx in moduleConstructors) {
 bot.irc.addListener("error", function(msg) {
 	doLog("Error: " + require("util").inspect(msg));
 });
+
 process.on("SIGHUP", function() {
 	bot.disconnect("Caught deadly SIGHUP");
 });

@@ -12,7 +12,7 @@ var bot;
 
 function Head(bawt, cfg) {
 	bot = bawt;
-	bot.irc.on("message", handleMessage, 10);
+	bot.irc.on("message", handleMessage, 50);
 	bot.console.log("Head loaded!");
 }
 
