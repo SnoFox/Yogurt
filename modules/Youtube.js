@@ -28,6 +28,7 @@ function handleMessage(from, to, msg) {
 	if(matches != undefined && matches.length != 0) {
 		for(idx in matches) {
 			var url = require('url').parse(matches[idx], true);
+			if(url.pathname == "/") return;
 			var videoID = undefined;
 			if(url.query.v == undefined) videoID = url.pathname.split('/')[1];
 			else videoID = url.query.v;
