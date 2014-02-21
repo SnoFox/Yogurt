@@ -6,3 +6,7 @@ exports.core.channels = ["#foxden"];
 exports.WatchDir = {};
 exports.WatchDir.paths = ["/Users/jjohnson/Personal/"];
 exports.WatchDir.chans = ["#foxden"]
+
+exports.Youtube = {};
+exports.Youtube.key = "YouTubeServerKeyHere";
+exports.Youtube.descLength = 140;
