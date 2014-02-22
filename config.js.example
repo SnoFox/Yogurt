@@ -10,3 +10,6 @@ exports.WatchDir.chans = ["#foxden"]
 exports.Youtube = {};
 exports.Youtube.key = "YouTubeServerKeyHere";
 exports.Youtube.descLength = 140;
+
+exports.SimpleIgnore = {};
+exports.SimpleIgnore.nicks = ['Pudding'];
