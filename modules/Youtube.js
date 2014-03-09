@@ -22,6 +22,12 @@ function Youtube(bawt, cfg) {
 	bot.console.log("Youtube loaded!");
 }
 
+Number.prototype.pad = function(size) {
+	var s = String(this);
+	while (s.length < size) s = "0" + s;
+	return s;
+}
+
 function handleMessage(from, to, msg) {
 	var youtubeURL = /https?:\/\/(www\.)?youtu(be\.com|\.be)\/\S+/gi
 	var matches = msg.match(youtubeURL);
@@ -101,7 +107,7 @@ function clockTime(playtime) {
 	if(dat.months > 0) out += dat.months + "M ";
 	if(dat.days > 0) out += dat.days + "D ";
 	if(dat.hours > 0) out += dat.hours + ":";
-	out += dat.minutes + ":";
-	out += dat.seconds;
+	out += dat.minutes.pad(2) + ":";
+	out += dat.seconds.pad(2);
 	return out;
 }
