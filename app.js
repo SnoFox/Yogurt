@@ -15,9 +15,7 @@ for(idx in moduleFiles) {
 	if(moduleFile.match(/.*\.js$/i)) moduleConstructors.push(require("./modules/" + moduleFile));
 }
 
-bot.irc = new irc.Client(cfg.core.server, cfg.core.nick, {
-	channels: cfg.core.channels
-});
+bot.irc = new irc.Client(cfg.core.server, cfg.core.nick, cfg.core);
 
 for(idx in moduleConstructors) {
 	var modName = moduleConstructors[idx].name;
