@@ -55,6 +55,7 @@ function handleGet(error, resp, body, chan) {
 }
 
 function getContentType(resp) {
+	if(resp.headers["content-type"] == undefined) return "application/unknown";
 	return resp.headers["content-type"].split(";")[0];
 }
 
