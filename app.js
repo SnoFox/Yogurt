@@ -4,7 +4,7 @@ var bot = {};
 var EventPipe = require("eventpipe").EventPipe;
 var EventEmitter = require("events").EventEmitter;
 util.inherits(EventEmitter, EventPipe);
-var cfg = require("./config.js");
+var cfg = require("./config.json");
 var irc = require("irc");
 var moduleFiles = fs.readdirSync("modules/");
 var moduleConstructors = [];
